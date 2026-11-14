@@ -12,7 +12,17 @@ jobs:
         with:
           distribution: temurin
           java-version: "17"
-
+      - name: Force compileSdk 36
+        run: |
+          mkdir -p ~/.gradle/init.d
+          cat > ~/.gradle/init.d/sdk.gradle <<'EOF'
+          allprojects {
+            afterEvaluate { p ->
+              def a = p.extensions.findByName('android')
+              if (a != null) { a.compileSdkVersion 36 }
+            }
+          }
+          EOF
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
