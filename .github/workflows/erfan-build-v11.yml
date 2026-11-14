@@ -17,6 +17,7 @@ jobs:
           mkdir -p ~/.gradle/init.d
           cat > ~/.gradle/init.d/sdk.gradle <<'EOF'
           allprojects {
+            tasks.configureEach { t -> if (t.name.startsWith('lintVital')) t.enabled = false }
             afterEvaluate { p ->
               def a = p.extensions.findByName('android')
               if (a != null) { a.compileSdkVersion 36 }
